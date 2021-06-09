@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     TextView signUpButton;
 
     // Backend variables
+    String FullName;
+    public static int UserID;
     DPOperations database;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -33,12 +35,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().hide();
         initiateEnvVariables();
 
         // Check if already logged in
         boolean comingFromSignUp = getIntent().getBooleanExtra("comingFromSignUp", false);
         if(sharedPref.getBoolean("login",false) && !comingFromSignUp){
+            UserID = sharedPref.getInt("userID", 0);
             Intent i = new Intent(MainActivity.this, HomePageActivity.class);
+            FullName = sharedPref.getString("fullName","");
+            i.putExtra("name", FullName);
             startActivity(i);
         }
 
@@ -48,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean loginStatus = login();
                 if(loginStatus){
                     Intent i = new Intent(MainActivity.this, HomePageActivity.class);
+                    i.putExtra("name", FullName);
                     startActivity(i);
                 }
             }
@@ -92,10 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Username or password is invalid", Toast.LENGTH_LONG).show();
             else
             {
+                UserID = cursor.getInt(0);
+                FullName = cursor.getString(1);
                 if(rememberMe)
-                    stayLoggedIn(username, password, true);
+                    stayLoggedIn(username, FullName, password, true);
                 else
-                    stayLoggedIn("", "", false);
+                    stayLoggedIn("", "", "", false);
 
                 return true;
             }
@@ -106,9 +115,11 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void stayLoggedIn(String username, String password, boolean loginFlag){
+    private void stayLoggedIn(String username, String FullName, String password, boolean loginFlag){
         editor = sharedPref.edit();
+        editor.putInt("userID", UserID);
         editor.putString("username", username);
+        editor.putString("fullName", FullName);
         editor.putString("password", password);
         editor.putBoolean("login", loginFlag);
         editor.apply();

@@ -49,8 +49,8 @@ public class DPOperations extends SQLiteOpenHelper {
                 "foreign key(OrdID) references Orders(OrdID)," +
                 "foreign key(ProID) references Products(ProID))");
 
-        db.execSQL("create table CartProducts (ProID integer not null, ProName text not null, ProPrice text not null, " +
-                "ProDescription text not null, ProQuantity integer not null )");
+        db.execSQL("create table CartProducts (CustID integer not null, ProID integer not null, ProName text not null, ProPrice text not null, " +
+                "ProDescription text not null, ProQuantity integer not null, foreign key(CustID) references Customers(CustID) )");
 
         return db;
     }
@@ -173,7 +173,7 @@ public class DPOperations extends SQLiteOpenHelper {
     public Cursor userLogin(String username, String password){
         database = getReadableDatabase();
         String [] args = {username, password};
-        Cursor cursor = database.rawQuery("select CustID from Customers where Username=? and Password =?", args);
+        Cursor cursor = database.rawQuery("select CustID, CustName from Customers where Username=? and Password =?", args);
 
         if(cursor!=null)
             cursor.moveToFirst();
@@ -202,6 +202,31 @@ public class DPOperations extends SQLiteOpenHelper {
 
         if(cursor != null)
             cursor.moveToNext();
+
+        database.close();
+        return cursor;
+    }
+
+    public void addProductToCart(Product cart, int CustID){
+        ContentValues row = new ContentValues();
+        row.put("CustID", CustID);
+        row.put("ProID", cart.getId());
+        row.put("ProName", cart.getName());
+        row.put("ProPrice", cart.getPrice());
+        row.put("ProDescription", cart.getDescription());
+        row.put("ProQuantity", cart.getQuantity());
+        database = getWritableDatabase();
+        database.insert("CartProducts", null, row);
+        database.close();
+    }
+
+    public Cursor getProductsByCategory(String CatID){
+        database = getReadableDatabase();
+        String [] args = {CatID};
+        Cursor cursor = database.rawQuery("select * from Products where CatID like? ", args);
+
+        if(cursor!=null)
+            cursor.moveToFirst();
 
         database.close();
         return cursor;

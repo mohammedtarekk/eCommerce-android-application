@@ -25,6 +25,7 @@ public class RecoverPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recover_password);
 
+        getSupportActionBar().hide();
         initiateEnvVariables();
 
         recoverButton.setOnClickListener(v -> {
