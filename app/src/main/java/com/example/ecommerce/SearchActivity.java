@@ -90,6 +90,7 @@ public class SearchActivity extends AppCompatActivity {
     private boolean search(String productName){
         searchList = new ArrayList<>();
         cursor = database.productSearch(productName);
+        boolean isSuccess = false;
         if(cursor != null)
         {
             while (!cursor.isAfterLast())
@@ -101,14 +102,15 @@ public class SearchActivity extends AppCompatActivity {
                 searchList.add(searchProducts);
                 cursor.moveToNext();
             }
-
-            adapter = new ProductsListAdapter(searchList, getApplicationContext());
-            layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL,false);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(layoutManager);
-            return true;
+            isSuccess = true;
         }
-        return false;
+
+        adapter = new ProductsListAdapter(searchList, getApplicationContext());
+        layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL,false);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
+
+        return isSuccess;
     }
 
     @Override

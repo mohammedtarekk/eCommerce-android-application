@@ -30,7 +30,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         // set welcome label with name
-        String welcomeText = "Welcome, " + getIntent().getStringExtra("name");
+        String welcomeText = "Welcome, " + MainActivity.FullName;
         getSupportActionBar().setTitle(welcomeText);
 
         // create tabs
@@ -95,14 +95,9 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(intent3);
                 return true;
 
-            /*case R.id.ordersmenu:
-                Intent intent4 = new Intent(HomePageActivity.this, OrdersActivity.class);
-                startActivity(intent4);
-                return true;*/
-
             case  R.id.logoutmenu:
                 // clear remember me
-                sharedPreferences = getSharedPreferences("remember me",MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences("remember me", MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putString("username", "");
                 editor.putString("fullName", "");

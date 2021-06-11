@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     TextView signUpButton;
 
     // Backend variables
-    String FullName;
+    public static String FullName;
     public static int UserID;
     DPOperations database;
     SharedPreferences sharedPref;

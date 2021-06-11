@@ -272,6 +272,7 @@ public class DPOperations extends SQLiteOpenHelper {
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
             database.close();
+            return cursor;
         }
 
         database.close();
