@@ -102,11 +102,11 @@ public class DPOperations extends SQLiteOpenHelper {
         db.insert("Products",null, p4);
 
         ContentValues p5 = new ContentValues();
-        p5.put("ProName","Xiaomi Redmi Note 9S");
-        p5.put("Price","5000");
+        p5.put("ProName","OPPO 50");
+        p5.put("Price","4700");
         p5.put("Quantity","1");
-        p5.put("Description","Dual SIM - 6.67 Inch, 128 GB, 6 GB RAM, 4G LTE - Glacier White");
-        p5.put("QrCode","6223007311694");
+        p5.put("Description","128 GB, 6 GB RAM, 4G LTE - Glacier White");
+        p5.put("QrCode","6223007311888");
         p5.put("CatID","1");
         db.insert("Products",null, p5);
 
@@ -263,11 +263,19 @@ public class DPOperations extends SQLiteOpenHelper {
         database.close();
     }
 
-    public Cursor productSearch(String productName){
+    public Cursor productSearch(String productName, String QRCode){
         database = getReadableDatabase();
+        String[] args;
+        Cursor cursor;
 
-        String[] args = {"%"+productName+"%"};
-        Cursor cursor = database.rawQuery("select * from Products where ProName like?", args);
+        if(productName != ""){
+            args = new String[]{"%" + productName + "%"};
+            cursor = database.rawQuery("select * from Products where ProName like?", args);
+        }
+        else{
+            args = new String[]{QRCode};
+            cursor = database.rawQuery("select * from Products where QrCode =?", args);
+        }
 
         if(cursor.getCount() > 0){
             cursor.moveToFirst();

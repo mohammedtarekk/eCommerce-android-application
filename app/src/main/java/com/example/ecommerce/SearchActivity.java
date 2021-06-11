@@ -34,6 +34,7 @@ public class SearchActivity extends AppCompatActivity {
     Product searchProducts;
     EditText searchText;
     ImageButton searchTextButton, searchVoiceButton, searchQrButton;
+    boolean isQRSearch = false;
     int voiceCode = 1;
 
     @Override
@@ -55,7 +56,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String productName = searchText.getText().toString();
                 if(!productName.equals("")){
-                    boolean searchSuccess = search(productName);
+                    boolean searchSuccess = search(productName, "");
                     if(!searchSuccess)
                         Toast.makeText(getApplicationContext(),"No matches", Toast.LENGTH_LONG).show();
                 }
@@ -75,21 +76,18 @@ public class SearchActivity extends AppCompatActivity {
         searchQrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*ActivityCompat.requestPermissions(SearchActivity.this, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+                isQRSearch = true;
+                ActivityCompat.requestPermissions(SearchActivity.this, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
                 IntentIntegrator intentIntegrator = new IntentIntegrator(SearchActivity.this);
-                intentIntegrator.initiateScan();*/
-
-                IntentIntegrator intentIntegrator = new IntentIntegrator(SearchActivity.this);
-                intentIntegrator.setPrompt("Scan a barcode or QR Code");
-                intentIntegrator.setOrientationLocked(true);
                 intentIntegrator.initiateScan();
             }
         });
     }
 
-    private boolean search(String productName){
+    // if product name is null , it will search by QR code and vice versa
+    private boolean search(String productName, String QRCode){
         searchList = new ArrayList<>();
-        cursor = database.productSearch(productName);
+        cursor = database.productSearch(productName, QRCode);
         boolean isSuccess = false;
         if(cursor != null)
         {
@@ -122,18 +120,22 @@ public class SearchActivity extends AppCompatActivity {
         {
             ArrayList<String> voiceText = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             searchText.setText(voiceText.get(0));
+
+            // Perform search
+            boolean searchSuccess = search(searchText.getText().toString(), "");
+            if(!searchSuccess)
+                Toast.makeText(getApplicationContext(),"No matches", Toast.LENGTH_LONG).show();
         }
 
         // Qr response
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(intentResult != null && intentResult.getContents() != null)
-            searchText.setText(intentResult.getContents());
+        if(intentResult != null && intentResult.getContents() != null){
+            // Perform search
+            boolean searchSuccess = search("", intentResult.getContents());
+            if(!searchSuccess)
+                Toast.makeText(getApplicationContext(),"No matches", Toast.LENGTH_LONG).show();
+        }
         else
             super.onActivityResult(requestCode, resultCode, data);
-
-        // Perform search
-        boolean searchSuccess = search(searchText.getText().toString());
-        if(!searchSuccess)
-            Toast.makeText(getApplicationContext(),"No matches", Toast.LENGTH_LONG).show();
     }
 }
