@@ -1,7 +1,7 @@
 package com.example.ecommerce;
 
 public class Product {
-    private int CustID, id, quantity, categoryID;
+    private int id, quantity, categoryID;
     private String name, price, description, qrCode;
     private boolean addedToCart;
 

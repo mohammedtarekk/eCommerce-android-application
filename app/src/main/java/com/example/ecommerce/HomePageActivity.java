@@ -86,8 +86,20 @@ public class HomePageActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.cartmenu:
                 Intent intent2 = new Intent(HomePageActivity.this, CartActivity.class);
+                CartActivity.cartList.clear();
                 startActivity(intent2);
                 return true;
+
+            case R.id.searchmenu:
+                Intent intent3 = new Intent(HomePageActivity.this, SearchActivity.class);
+                startActivity(intent3);
+                return true;
+
+            /*case R.id.ordersmenu:
+                Intent intent4 = new Intent(HomePageActivity.this, OrdersActivity.class);
+                startActivity(intent4);
+                return true;*/
+
             case  R.id.logoutmenu:
                 // clear remember me
                 sharedPreferences = getSharedPreferences("remember me",MODE_PRIVATE);
@@ -99,8 +111,8 @@ public class HomePageActivity extends AppCompatActivity {
                 editor.apply();
 
                 // Back to login page
-                Intent intent3 = new Intent(HomePageActivity.this, MainActivity.class);
-                startActivity(intent3);
+                Intent intent5 = new Intent(HomePageActivity.this, MainActivity.class);
+                startActivity(intent5);
 
                 return true;
         }

@@ -2,8 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/searchmenu"
+        android:title="Search" />
+    <item
         android:id="@+id/cartmenu"
         android:title="My Cart" />
+    <item
+        android:id="@+id/ordersmenu"
+        android:title="My Orders" />
     <item
         android:id="@+id/logoutmenu"
         android:title="Logout" />

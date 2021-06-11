@@ -79,33 +79,4 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
             });
         }
     }
-
-    /*MobileFragment c;
-    ArrayList<Product> productsList;
-
-    public ProductsListAdapter(ArrayList<Product> productsList, MobileFragment c) {
-        this.c = c;
-        this.productsList = productsList;
-    }
-
-    @NonNull
-    @Override
-    public ProductsListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item, null);
-
-
-        return new ProductsListHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ProductsListHolder holder, int position) {
-        holder.productName.setText(productsList.get(position).getName());
-        holder.productPrice.setText(productsList.get(position).getPrice() + " $");
-        holder.productDes.setText(productsList.get(position).getDescription());
-    }
-
-    @Override
-    public int getItemCount() {
-        return productsList.size();
-    }*/
 }
