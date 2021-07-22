@@ -7,4 +7,3 @@ The Application has the following facilities:
 - Add several products to the shopping cart
 - Add/remove/edit quantities of products in the cart
 - Show order total before submission
-- Determine location of delivery by GPS(Google Maps)
